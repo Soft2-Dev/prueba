@@ -15,30 +15,30 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   void initState() {
-    Provider.of<GetPeliculasProvider>(context, listen: false).getPeliculas();
+    Provider.of<GetPeliculasProvider>(context, listen: false).getGeneros();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final peliculas = Provider.of<GetPeliculasProvider>(context);
+    final generos = Provider.of<GetPeliculasProvider>(context);
 
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
-        title: Text(peliculas.name),
+        title: Text('Home'),
         centerTitle: true,
         elevation: 0,
       ),
       body: ListView(children: [
-        CardSwiper(peliculas: peliculas.peliculasXGeneros),
+        CardSwiper(genero: generos.generos),
         MovieSlider(
-            peliculas: peliculas.peliculasXGeneros, name: peliculas.name),
+            generos: generos.generos, name: 'General'),
         const Divider(height: 30),
-        MovieSlider(peliculas: peliculas.pupulares, name: 'Populares'),
+        MovieSlider(generos: generos.generos, name: 'Populares'),
         const Divider(height: 30),
         MovieSlider(
-            peliculas: peliculas.proximosExtrenos, name: 'Proximos Extrenos'),
+            generos: generos.generos, name: 'Proximos Extrenos'),
       ]),
     ));
   }

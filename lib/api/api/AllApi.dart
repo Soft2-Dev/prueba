@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 
 class AllApi {
   //ferasApp.php
-  static String url = 'https://api.themoviedb.org/3/';
+  static String url = 'https://comicvine.gamespot.com/api/issues/';
   static final Dio _dio = Dio();
 
   static void configuteDio() {

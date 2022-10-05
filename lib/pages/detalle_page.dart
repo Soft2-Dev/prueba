@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:movietest/modelo/modelo_peliculas.dart';
+import 'package:movietest/modelo/modelo_detalle.dart';
+
 import 'package:provider/provider.dart';
 
+import '../modelo/modelo_generos.dart';
 import '../provider/get_peliculas_provider.dart';
 import '../widgets/casting_card.dart';
 
@@ -16,7 +18,7 @@ class DetallePage extends StatefulWidget {
 class _DetallePageState extends State<DetallePage> {
   @override
   void initState() {
-    Provider.of<GetPeliculasProvider>(context, listen: false).getCreditos();
+  Provider.of<GetPeliculasProvider>(context, listen: false).getdetalles();
 
     super.initState();
   }
@@ -24,21 +26,19 @@ class _DetallePageState extends State<DetallePage> {
   @override
   Widget build(BuildContext context) {
     final peliculas =
-        Provider.of<GetPeliculasProvider>(context).isSelectPelicula;
-    final provider = Provider.of<GetPeliculasProvider>(context);
+        Provider.of<GetPeliculasProvider>(context).isSelectGenero;
+    final descrip = Provider.of<GetPeliculasProvider>(context).descrip;
 
-    print(peliculas.title);
+    print(peliculas.name);
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          _CustomAppBar(peliculas: peliculas),
+          _CustomAppBar(detalle: peliculas),
           SliverList(
               delegate: SliverChildListDelegate([
             _PosterAndtitle(peliculas: peliculas),
-            _Overview(peliculas: peliculas),
-            CastingCard(
-              actores: provider.actores,
-            )
+            _Overview(descrip: descrip),
+           
           ]))
         ],
       ),
@@ -47,9 +47,9 @@ class _DetallePageState extends State<DetallePage> {
 }
 
 class _CustomAppBar extends StatelessWidget {
-  const _CustomAppBar({Key? key, required this.peliculas}) : super(key: key);
+  const _CustomAppBar({Key? key, required this.detalle}) : super(key: key);
 
-  final Pelicula peliculas;
+  final Genero detalle;
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
@@ -65,12 +65,12 @@ class _CustomAppBar extends StatelessWidget {
             alignment: Alignment.bottomCenter,
             width: double.infinity,
             child: Text(
-              peliculas.title!,
+              detalle.name!,
               style: TextStyle(fontSize: 16),
             )),
         background: FadeInImage(
           placeholder: AssetImage('img/loading.gif'),
-          image: NetworkImage(peliculas.fullPosterImg),
+          image: NetworkImage(detalle.img!),
           fit: BoxFit.cover,
         ),
       ),
@@ -81,7 +81,7 @@ class _CustomAppBar extends StatelessWidget {
 class _PosterAndtitle extends StatelessWidget {
   const _PosterAndtitle({Key? key, required this.peliculas}) : super(key: key);
 
-  final Pelicula peliculas;
+  final Genero peliculas;
   @override
   Widget build(BuildContext context) {
     final TextTheme textTheme = Theme.of(context).textTheme;
@@ -98,7 +98,7 @@ class _PosterAndtitle extends StatelessWidget {
               borderRadius: BorderRadius.circular(20),
               child: FadeInImage(
                 placeholder: const AssetImage('img/no-image.jpg'),
-                image: NetworkImage(peliculas.fullPosterImg),
+                image: NetworkImage(peliculas.img!),
                 height: 150,
               ),
             ),
@@ -112,7 +112,7 @@ class _PosterAndtitle extends StatelessWidget {
               ConstrainedBox(
                 constraints: BoxConstraints(maxWidth: size.width * 0.55),
                 child: Text(
-                  peliculas.title!,
+                  peliculas.name!,
                   style: textTheme.headline5,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 2,
@@ -121,7 +121,7 @@ class _PosterAndtitle extends StatelessWidget {
               ConstrainedBox(
                 constraints: BoxConstraints(maxWidth: size.width * 0.6),
                 child: Text(
-                  peliculas.originalTitle!,
+                  peliculas.name!,
                   style: textTheme.subtitle2,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 2,
@@ -138,7 +138,7 @@ class _PosterAndtitle extends StatelessWidget {
                     width: 5,
                   ),
                   Text(
-                    peliculas.voteCount!,
+                    peliculas.name!,
                     style: textTheme.caption,
                   )
                 ],
@@ -152,9 +152,9 @@ class _PosterAndtitle extends StatelessWidget {
 }
 
 class _Overview extends StatelessWidget {
-  const _Overview({Key? key, required this.peliculas}) : super(key: key);
+  const _Overview({Key? key, required this.descrip}) : super(key: key);
 
-  final Pelicula peliculas;
+  final String descrip;
   @override
   Widget build(BuildContext context) {
     final TextTheme textTheme = Theme.of(context).textTheme;
@@ -162,7 +162,7 @@ class _Overview extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
       child: Text(
-        peliculas.overview!,
+        descrip,
         textAlign: TextAlign.justify,
         style: textTheme.subtitle1,
       ),

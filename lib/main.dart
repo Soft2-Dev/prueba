@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Pelis',
         home: const SplashScreenPage(),
-        initialRoute: 'splas',
+        initialRoute: 'HomePage',
         routes: getRutas(),
         scaffoldMessengerKey: NotificationService.msnKey,
         onGenerateRoute: (RouteSettings settings) {

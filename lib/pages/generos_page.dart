@@ -27,7 +27,7 @@ class _GenerosPagesState extends State<GenerosPages> {
                 final provider =
                     Provider.of<GetPeliculasProvider>(context, listen: false);
                 provider.idGenero = e.id!;
-                provider.name = e.name!;
+               
                 print(e.id);
                 Navigator.pushNamed(context, 'HomePage');
               },

@@ -1,37 +1,41 @@
-class Generos {
-  List<Genero> dato = [];
-  Generos();
+class Detalles {
+  List<Detalle> dato = [];
+  Detalles();
 
-  Generos.fromlist(List<dynamic> datos) {
+  Detalles.fromlist(List<dynamic> datos) {
     if (datos == null) return;
 
     for (var item in datos) {
-      final detalle = Genero.fromJsonMap(item);
+      final detalle = Detalle.fromJsonMap(item);
       dato.add(detalle);
     }
   }
 }
 
-class Genero {
+//description
+class Detalle {
   int? id;
   String? name;
   String? img;
   String? urlDetalle;
+  String? description;
 
 
-  Genero({
+  Detalle({
     this.id,
     this.name,
     this.img,
     this.urlDetalle,
+    this.description,
 
   });
 
-  Genero.fromJsonMap(Map<String, dynamic> datos) {
+  Detalle.fromJsonMap(Map<String, dynamic> datos) {
     id = datos['id'];
     img = datos['image']['original_url'];
     name = datos['volume']['name'];
-    urlDetalle = datos['api_detail_url'];
+    
+    description = datos['description'];
   print('aaaaaaaaa '+urlDetalle!);
 
   }

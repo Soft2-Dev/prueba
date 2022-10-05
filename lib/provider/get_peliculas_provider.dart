@@ -4,78 +4,51 @@ import 'package:flutter/material.dart';
 
 import '../api/api/AllApi.dart';
 import '../modelo/modelo_actores.dart';
-import '../modelo/modelo_peliculas.dart';
+import '../modelo/modelo_detalle.dart';
+import '../modelo/modelo_generos.dart';
+
 
 class GetPeliculasProvider extends ChangeNotifier {
-  List<Pelicula> peliculas = [];
-  List<Pelicula> peliculasXGeneros = [];
-  List<Pelicula> proximosExtrenos = [];
-  List<Pelicula> pupulares = [];
+  List<Genero> generos = [];
+  List<Genero> peliculasXGeneros = [];
+  List<Genero> proximosExtrenos = [];
+  List<Genero> pupulares = [];
+  List<Detalle> detalle = [];
   List<Actor> actores = [];
 
-  late Pelicula isSelectPelicula;
+  late Genero isSelectGenero;
   late int idGenero;
-  late String name;
-
-  getPeliculas() async {
-    peliculasXGeneros = [];
+   String descrip ='';
+  
+  
+    getGeneros() async {
     String url =
-        'movie/now_playing?api_key=73a82f66dd9b489f8449fb8e9dd6f17e&language=es-ES&page=1';
+        '?api_key=3b84b1bf6c66d9c7d56d687517f7681d1f1ea499&format=json';
     print(AllApi.url + url);
 
     final resp = await AllApi.httpGet(url);
-    final Peliculas peliculas = Peliculas.fromlist(resp['results']);
-    print(peliculas.dato[0].posterPath);
-
-    this.peliculas = peliculas.dato;
-    clasifica();
-    getPeliculasProximos();
-    getPeliculasPopulares();
+    print(resp['results']);
+    final Generos generos = Generos.fromlist(resp['results']);
+    print(generos.dato[0].name);
+    this.generos = generos.dato;
     notifyListeners();
   }
 
-  getPeliculasProximos() async {
+   getdetalles() async {
+    String id=isSelectGenero.urlDetalle!;
     String url =
-        'movie/upcoming?api_key=73a82f66dd9b489f8449fb8e9dd6f17e&language=es-ES&page=1';
+        '$id?api_key=3b84b1bf6c66d9c7d56d687517f7681d1f1ea499&format=json';
     print(AllApi.url + url);
 
     final resp = await AllApi.httpGet(url);
-    final Peliculas proximosExtrenos = Peliculas.fromlist(resp['results']);
-
-    this.proximosExtrenos = proximosExtrenos.dato;
-    notifyListeners();
-  }
-
-  getPeliculasPopulares() async {
-    String url =
-        'movie/popular?api_key=73a82f66dd9b489f8449fb8e9dd6f17e&language=es-ES&page=1';
-    print(AllApi.url + url);
-
-    final resp = await AllApi.httpGet(url);
-    final Peliculas pupulares = Peliculas.fromlist(resp['results']);
-
-    this.pupulares = pupulares.dato;
-    notifyListeners();
-  }
-
-  getCreditos() async {
-    final String idmovie = isSelectPelicula.id!;
-    String url =
-        'movie/$idmovie/credits?api_key=73a82f66dd9b489f8449fb8e9dd6f17e&language=es-ES';
-    print(AllApi.url + url);
-
-    final resp = await AllApi.httpGet(url);
-    final Actores actores = Actores.fromlist(resp['cast']);
-
-    this.actores = actores.dato;
-    notifyListeners();
-  }
-
-  clasifica() {
-    for (var i = 0; i < peliculas.length; i++) {
-      if (peliculas[i].genreIds!.any((item) => item == idGenero)) {
-        peliculasXGeneros.add(peliculas[i]);
-      }
+    if (resp['results']['description']!=null) {
+      
+    descrip=resp['results']['description'];
     }
+    print(resp['results']['description']);
+  
+    notifyListeners();
   }
+
+
 }

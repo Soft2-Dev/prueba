@@ -10,11 +10,12 @@ class GetGenerosProvider extends ChangeNotifier {
 
   getGeneros() async {
     String url =
-        'genre/movie/list?api_key=73a82f66dd9b489f8449fb8e9dd6f17e&language=es-ES';
+        '?api_key=3b84b1bf6c66d9c7d56d687517f7681d1f1ea499&format=json';
     print(AllApi.url + url);
 
     final resp = await AllApi.httpGet(url);
-    final Generos generos = Generos.fromlist(resp['genres']);
+    print(resp);
+    final Generos generos = Generos.fromlist(resp['results']);
     print(generos.dato[0].name);
     this.generos = generos.dato;
     notifyListeners();

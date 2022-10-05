@@ -12,7 +12,7 @@ class SplashScreenPage extends StatelessWidget {
     final size = MediaQuery.of(context).size;
 
     return SplashScreenView(
-      navigateRoute: GenerosPages(),
+      navigateRoute: HomePage(),
       // backgroundColor: Color(0xffc330d1),
       duration: 4000,
       imageSize: 400,
